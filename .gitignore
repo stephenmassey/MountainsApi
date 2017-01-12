@@ -62,6 +62,7 @@ Thumbs.db
 [Bb]in
 [Oo]bj
 [Tt]est[Rr]esults
+applicationhost.config
 *.suo
 *.user
 *.[Cc]ache
