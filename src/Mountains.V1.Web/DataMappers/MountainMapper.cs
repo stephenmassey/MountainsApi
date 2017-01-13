@@ -10,7 +10,14 @@ namespace Mountains.V1.Web.DataMappers
             if (source == null)
                 return null;
 
-            return new Mountain(0, source.Name);
+            return new Mountain(
+                0,
+                source.Name,
+                source.Latitude,
+                source.Longitude,
+                source.Elevation,
+                source.Prominence,
+                source.Isolation);
         }
 
         public static MountainDto Map(Mountain source)
@@ -22,6 +29,11 @@ namespace Mountains.V1.Web.DataMappers
             {
                 Id = source.Id.ToString(),
                 Name = source.Name,
+                Latitude = source.Latitude,
+                Longitude = source.Longitude,
+                Elevation = source.Elevation,
+                Isolation = source.Isolation,
+                Prominence = source.Prominence,
             };
         }
     }

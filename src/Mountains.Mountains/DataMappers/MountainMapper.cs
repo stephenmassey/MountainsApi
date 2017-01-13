@@ -9,7 +9,14 @@ namespace Mountains.Mountains.DataMappers
             if (source == null)
                 return null;
 
-            return new Mountain(source.Id, source.Name);
+            return new Mountain(
+                source.Id,
+                source.Name,
+                source.Latitude,
+                source.Longitude,
+                source.Elevation,
+                source.Prominence,
+                source.Isolation);
         }
 
         public static DbMountain Map(Mountain source)
@@ -21,6 +28,11 @@ namespace Mountains.Mountains.DataMappers
             {
                 Id = source.Id,
                 Name = source.Name,
+                Latitude = source.Latitude,
+                Longitude = source.Longitude,
+                Elevation = source.Elevation,
+                Isolation = source.Isolation,
+                Prominence = source.Prominence,
             };
         }
     }

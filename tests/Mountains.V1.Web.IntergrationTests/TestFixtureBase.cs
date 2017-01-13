@@ -17,6 +17,11 @@ namespace Mountains.V1.Web.IntergrationTests
             return new MountainDto
             {
                 Name = Guid.NewGuid().ToString(),
+                Latitude = 4.65,
+                Longitude = 5.3,
+                Elevation = 6.5,
+                Isolation = 0.4,
+                Prominence = 5.5,
             };
         }
 
@@ -27,6 +32,11 @@ namespace Mountains.V1.Web.IntergrationTests
 
             Assert.AreEqual(expectedMountain.Id, actualMountain.Id);
             Assert.AreEqual(expectedMountain.Name, actualMountain.Name);
+            Assert.AreEqual(expectedMountain.Latitude, actualMountain.Latitude);
+            Assert.AreEqual(expectedMountain.Longitude, actualMountain.Longitude);
+            Assert.AreEqual(expectedMountain.Elevation, actualMountain.Elevation);
+            Assert.AreEqual(expectedMountain.Isolation, actualMountain.Isolation);
+            Assert.AreEqual(expectedMountain.Prominence, actualMountain.Prominence);
         }
 
         private Uri GetMountainsUri()

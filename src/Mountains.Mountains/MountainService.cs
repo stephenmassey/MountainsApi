@@ -17,10 +17,11 @@ namespace Mountains.Mountains
         public Mountain AddMountain(Mountain mountain)
         {
             DbMountain dbMountain = MountainMapper.Map(mountain);
+
             const string query = @"
 INSERT INTO mountains
-(name)
-VALUES (@name);
+(name, latitude, longitude, elevation, prominence, isolation)
+VALUES (@name, @latitude, @longitude, @elevation, @prominence, @isolation);
 SELECT LAST_INSERT_ID();";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -41,8 +42,8 @@ WHERE id = @id";
 
         public Mountain GetMountain(int id)
         {
-            const string query = @"
-SELECT id, name
+            string query = @"
+SELECT " + DbMountain.GenerateColumns() + @"
 FROM mountains
 WHERE id = @id";
 
@@ -52,8 +53,8 @@ WHERE id = @id";
 
         public ReadOnlyCollection<Mountain> GetMountains()
         {
-            const string query = @"
-SELECT id, name
+            string query = @"
+SELECT " + DbMountain.GenerateColumns() + @"
 FROM mountains";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -66,8 +67,13 @@ FROM mountains";
             dbMountain.Id = id;
 
             const string query = @"
-UPDATE mountains
-SET name = @name
+UPDATE mountains SET
+    name = @name,
+    latitude = @latitude,
+    longitude = @longitude,
+    elevation = @elevation,
+    prominence = @prominence,
+    isolation = @isolation
 WHERE id = @id";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
