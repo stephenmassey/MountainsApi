@@ -17,7 +17,8 @@ namespace Mountains.V1.Web.DataMappers
                 source.Longitude,
                 source.Elevation,
                 source.Prominence,
-                source.Isolation);
+                source.Isolation,
+                source.MountainRangeId != null ? int.Parse(source.MountainRangeId) : (int?)null);
         }
 
         public static MountainDto Map(Mountain source)
@@ -34,6 +35,7 @@ namespace Mountains.V1.Web.DataMappers
                 Elevation = source.Elevation,
                 Isolation = source.Isolation,
                 Prominence = source.Prominence,
+                MountainRangeId = source.MountainRangeId.HasValue ? source.MountainRangeId.ToString() : null,
             };
         }
     }

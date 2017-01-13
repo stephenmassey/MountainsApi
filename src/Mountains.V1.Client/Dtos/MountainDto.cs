@@ -9,5 +9,6 @@
         public double Elevation { get; set; }
         public double Prominence { get; set; }
         public double Isolation { get; set; }
+        public string MountainRangeId { get; set; }
     }
 }

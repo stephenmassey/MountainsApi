@@ -2,7 +2,7 @@
 {
     public sealed class Mountain
     {
-        public Mountain(int id, string name, double latitude, double longitude, double elevation, double prominence, double isolation)
+        public Mountain(int id, string name, double latitude, double longitude, double elevation, double prominence, double isolation, int? mountainRangeId)
         {
             Id = id;
             Name = name;
@@ -11,6 +11,7 @@
             Elevation = elevation;
             Prominence = prominence;
             Isolation = isolation;
+            MountainRangeId = mountainRangeId;
         }
 
         public int Id { get; }
@@ -26,5 +27,7 @@
         public double Prominence { get; }
 
         public double Isolation { get; }
+
+        public int? MountainRangeId { get; }
     }
 }

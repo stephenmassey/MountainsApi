@@ -16,7 +16,8 @@ namespace Mountains.Mountains.DataMappers
                 source.Longitude,
                 source.Elevation,
                 source.Prominence,
-                source.Isolation);
+                source.Isolation,
+                source.MountainRangeId);
         }
 
         public static DbMountain Map(Mountain source)
@@ -33,6 +34,7 @@ namespace Mountains.Mountains.DataMappers
                 Elevation = source.Elevation,
                 Isolation = source.Isolation,
                 Prominence = source.Prominence,
+                MountainRangeId = source.MountainRangeId,
             };
         }
     }

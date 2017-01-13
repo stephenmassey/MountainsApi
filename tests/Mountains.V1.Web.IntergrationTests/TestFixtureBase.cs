@@ -45,6 +45,7 @@ namespace Mountains.V1.Web.IntergrationTests
             Assert.AreEqual(expectedMountain.Elevation, actualMountain.Elevation);
             Assert.AreEqual(expectedMountain.Isolation, actualMountain.Isolation);
             Assert.AreEqual(expectedMountain.Prominence, actualMountain.Prominence);
+            Assert.AreEqual(expectedMountain.MountainRangeId, actualMountain.MountainRangeId);
         }
 
         protected void AssertIsEqual(MountainRangeDto expectedMountainRange, MountainRangeDto actualMountainRange)

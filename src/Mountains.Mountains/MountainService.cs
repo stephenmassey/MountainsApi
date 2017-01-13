@@ -20,8 +20,8 @@ namespace Mountains.Mountains
 
             const string query = @"
 INSERT INTO mountains
-(name, latitude, longitude, elevation, prominence, isolation)
-VALUES (@name, @latitude, @longitude, @elevation, @prominence, @isolation);
+(name, latitude, longitude, elevation, prominence, isolation, mountainRangeId)
+VALUES (@name, @latitude, @longitude, @elevation, @prominence, @isolation, @mountainRangeId);
 SELECT LAST_INSERT_ID();";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -74,7 +74,8 @@ UPDATE mountains SET
     longitude = @longitude,
     elevation = @elevation,
     prominence = @prominence,
-    isolation = @isolation
+    isolation = @isolation,
+    mountainRangeId = @mountainRangeId
 WHERE id = @id";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())

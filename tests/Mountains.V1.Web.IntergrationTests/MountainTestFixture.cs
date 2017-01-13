@@ -40,6 +40,37 @@ namespace Mountains.V1.Web.IntergrationTests
         }
 
         [Test]
+        public void CreateMountainWithRange()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto expectedMountain = CreateMountainDto();
+            expectedMountain.MountainRangeId = client.CreateMountainRangeAsync(CreateMountainRangeDto()).Result.Id;
+
+            MountainDto actualMountain = client.CreateMountainAsync(expectedMountain).Result;
+            expectedMountain.Id = actualMountain.Id;
+
+            Assert.IsNotNull(actualMountain);
+            AssertIsEqual(expectedMountain, actualMountain);
+
+            MountainDto mountain = client.GetMountainAsync(actualMountain.Id).Result;
+
+            Assert.IsNotNull(mountain);
+            AssertIsEqual(expectedMountain, mountain);
+        }
+
+        [Test]
+        public void CreateMountainWithInvalidRange()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto mountain = CreateMountainDto();
+            mountain.MountainRangeId = "0";
+
+            Assert.IsNull(client.CreateMountainAsync(mountain).Result);
+        }
+
+        [Test]
         public void CreateMountainWithNullName()
         {
             MountainsClient client = CreateMountainsClient();
@@ -92,6 +123,44 @@ namespace Mountains.V1.Web.IntergrationTests
 
             Assert.IsNotNull(mountain);
             AssertIsEqual(expectedMountain, mountain);
+        }
+
+        [Test]
+        public void UpdateMountainWithRange()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto expectedMountain = CreateMountainDto();
+
+            MountainDto actualMountain = client.CreateMountainAsync(expectedMountain).Result;
+            expectedMountain.Id = actualMountain.Id;
+            expectedMountain.Name = "Updated " + Guid.NewGuid().ToString();
+            expectedMountain.MountainRangeId = client.CreateMountainRangeAsync(CreateMountainRangeDto()).Result.Id;
+
+            actualMountain = client.UpdateMountainAsync(expectedMountain.Id, expectedMountain).Result;
+
+            Assert.IsNotNull(actualMountain);
+            AssertIsEqual(expectedMountain, actualMountain);
+
+            MountainDto mountain = client.GetMountainAsync(actualMountain.Id).Result;
+
+            Assert.IsNotNull(mountain);
+            AssertIsEqual(expectedMountain, mountain);
+        }
+
+        [Test]
+        public void UpdateMountainWithinvalidRange()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto expectedMountain = CreateMountainDto();
+
+            MountainDto actualMountain = client.CreateMountainAsync(expectedMountain).Result;
+            expectedMountain.Id = actualMountain.Id;
+            expectedMountain.Name = "Updated " + Guid.NewGuid().ToString();
+            expectedMountain.MountainRangeId = "0";
+
+            Assert.IsNull(client.UpdateMountainAsync(expectedMountain.Id, expectedMountain).Result);
         }
 
         [Test]
