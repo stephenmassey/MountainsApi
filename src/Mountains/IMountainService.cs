@@ -7,7 +7,7 @@ namespace Mountains
     {
         Mountain GetMountain(int id);
 
-        ReadOnlyCollection<Mountain> GetMountains();
+        ReadOnlyCollection<Mountain> GetMountains(int start, int count);
 
         Mountain AddMountain(Mountain mountain);
 
@@ -17,7 +17,7 @@ namespace Mountains
 
         MountainRange GetMountainRange(int id);
 
-        ReadOnlyCollection<MountainRange> GetMountainRanges();
+        ReadOnlyCollection<MountainRange> GetMountainRanges(int start, int count);
 
         MountainRange AddMountainRange(MountainRange mountain);
 

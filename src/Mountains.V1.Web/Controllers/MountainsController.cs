@@ -17,9 +17,9 @@ namespace Mountains.V1.Web.Controllers
 
         [HttpGet]
         [Route("mountains")]
-        public MountainCollectionDto Get()
+        public MountainCollectionDto List(int start = 0, int? count = null)
         {
-            return new MountainCollectionDto { Mountains = _mountainService.GetMountains().Select(MountainMapper.Map) };
+            return new MountainCollectionDto { Mountains = _mountainService.GetMountains(start, GetCount(count)).Select(MountainMapper.Map) };
         }
 
         [HttpGet]

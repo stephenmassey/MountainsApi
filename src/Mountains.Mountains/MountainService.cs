@@ -51,14 +51,15 @@ WHERE id = @id";
                 return connection.Query<DbMountain>(query, new { id }).Select(MountainMapper.Map).SingleOrDefault();
         }
 
-        public ReadOnlyCollection<Mountain> GetMountains()
+        public ReadOnlyCollection<Mountain> GetMountains(int start, int count)
         {
             string query = @"
 SELECT " + DbMountain.GenerateColumns() + @"
-FROM mountains";
+FROM mountains
+LIMIT @start, @count";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
-                return connection.Query<DbMountain>(query).Select(MountainMapper.Map).ToList().AsReadOnly();
+                return connection.Query<DbMountain>(query, new { start, count }).Select(MountainMapper.Map).ToList().AsReadOnly();
         }
 
         public Mountain UpdateMountain(int id, Mountain mountain)
@@ -119,14 +120,15 @@ WHERE id = @id";
                 return connection.Query<DbMountainRange>(query, new { id }).Select(MountainRangeMapper.Map).SingleOrDefault();
         }
 
-        public ReadOnlyCollection<MountainRange> GetMountainRanges()
+        public ReadOnlyCollection<MountainRange> GetMountainRanges(int start, int count)
         {
             string query = @"
 SELECT " + DbMountainRange.GenerateColumns() + @"
-FROM mountain_ranges";
+FROM mountain_ranges
+LIMIT @start, @count";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
-                return connection.Query<DbMountainRange>(query).Select(MountainRangeMapper.Map).ToList().AsReadOnly();
+                return connection.Query<DbMountainRange>(query, new { start, count }).Select(MountainRangeMapper.Map).ToList().AsReadOnly();
         }
 
         public MountainRange UpdateMountainRange(int id, MountainRange mountainRange)
