@@ -62,6 +62,52 @@ namespace Mountains.V1.Client
             return response.IsSuccessStatusCode;
         }
 
+        public async Task<MountainRangeCollectionDto> GetMountainRangesAsync()
+        {
+            MountainRangeCollectionDto mountainRangeCollection = null;
+            HttpResponseMessage response = await _client.GetAsync("mountainranges");
+            if (response.IsSuccessStatusCode)
+                mountainRangeCollection = await response.Content.ReadAsAsync<MountainRangeCollectionDto>();
+
+            return mountainRangeCollection;
+        }
+
+        public async Task<MountainRangeDto> GetMountainRangeAsync(string mountainRangeId)
+        {
+            MountainRangeDto mountainRange = null;
+            HttpResponseMessage response = await _client.GetAsync($"mountainranges/{mountainRangeId}");
+            if (response.IsSuccessStatusCode)
+                mountainRange = await response.Content.ReadAsAsync<MountainRangeDto>();
+
+            return mountainRange;
+        }
+
+        public async Task<MountainRangeDto> CreateMountainRangeAsync(MountainRangeDto mountainRange)
+        {
+            MountainRangeDto newMountainRange = null;
+            HttpResponseMessage response = await _client.PostAsJsonAsync("mountainranges", mountainRange);
+            if (response.IsSuccessStatusCode)
+                newMountainRange = await response.Content.ReadAsAsync<MountainRangeDto>();
+
+            return newMountainRange;
+        }
+
+        public async Task<MountainRangeDto> UpdateMountainRangeAsync(string mountainRangeId, MountainRangeDto mountainRange)
+        {
+            MountainRangeDto newMountainRange = null;
+            HttpResponseMessage response = await _client.PutAsJsonAsync($"mountainranges/{mountainRangeId}", mountainRange);
+            if (response.IsSuccessStatusCode)
+                newMountainRange = await response.Content.ReadAsAsync<MountainRangeDto>();
+
+            return newMountainRange;
+        }
+
+        public async Task<bool> DeleteMountainRangeAsync(string mountainRangeId)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"mountainranges/{mountainRangeId}");
+            return response.IsSuccessStatusCode;
+        }
+
         private HttpClient _client;
     }
 }

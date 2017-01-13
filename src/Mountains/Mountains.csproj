@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IMountainService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceModels\MountainRange.cs" />
     <Compile Include="ServiceModels\Mountain.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

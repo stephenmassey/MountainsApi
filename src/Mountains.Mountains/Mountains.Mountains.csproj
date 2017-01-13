@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataMappers\MountainRangeMapper.cs" />
     <Compile Include="DataMappers\MountainMapper.cs" />
+    <Compile Include="DbMountainRange.cs" />
     <Compile Include="DbMountain.cs" />
     <Compile Include="MountainService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

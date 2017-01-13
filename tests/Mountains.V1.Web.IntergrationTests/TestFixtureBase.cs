@@ -25,6 +25,14 @@ namespace Mountains.V1.Web.IntergrationTests
             };
         }
 
+        protected MountainRangeDto CreateMountainRangeDto()
+        {
+            return new MountainRangeDto
+            {
+                Name = Guid.NewGuid().ToString(),
+            };
+        }
+
         protected void AssertIsEqual(MountainDto expectedMountain, MountainDto actualMountain)
         {
             Assert.IsNotNull(expectedMountain);
@@ -37,6 +45,15 @@ namespace Mountains.V1.Web.IntergrationTests
             Assert.AreEqual(expectedMountain.Elevation, actualMountain.Elevation);
             Assert.AreEqual(expectedMountain.Isolation, actualMountain.Isolation);
             Assert.AreEqual(expectedMountain.Prominence, actualMountain.Prominence);
+        }
+
+        protected void AssertIsEqual(MountainRangeDto expectedMountainRange, MountainRangeDto actualMountainRange)
+        {
+            Assert.IsNotNull(expectedMountainRange);
+            Assert.IsNotNull(actualMountainRange);
+
+            Assert.AreEqual(expectedMountainRange.Id, actualMountainRange.Id);
+            Assert.AreEqual(expectedMountainRange.Name, actualMountainRange.Name);
         }
 
         private Uri GetMountainsUri()

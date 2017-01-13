@@ -81,5 +81,68 @@ WHERE id = @id";
 
             return MountainMapper.Map(dbMountain);
         }
+
+        public MountainRange AddMountainRange(MountainRange mountainRange)
+        {
+            DbMountainRange dbMountainRange = MountainRangeMapper.Map(mountainRange);
+
+            const string query = @"
+INSERT INTO mountain_ranges
+(name)
+VALUES (@name);
+SELECT LAST_INSERT_ID();";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                dbMountainRange.Id = connection.Query<int>(query, dbMountainRange).Single();
+
+            return MountainRangeMapper.Map(dbMountainRange);
+        }
+
+        public void DeleteMountainRange(int id)
+        {
+            const string query = @"
+DELETE FROM mountain_ranges
+WHERE id = @id";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                connection.Execute(query, new { id });
+        }
+
+        public MountainRange GetMountainRange(int id)
+        {
+            string query = @"
+SELECT " + DbMountainRange.GenerateColumns() + @"
+FROM mountain_ranges
+WHERE id = @id";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                return connection.Query<DbMountainRange>(query, new { id }).Select(MountainRangeMapper.Map).SingleOrDefault();
+        }
+
+        public ReadOnlyCollection<MountainRange> GetMountainRanges()
+        {
+            string query = @"
+SELECT " + DbMountainRange.GenerateColumns() + @"
+FROM mountain_ranges";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                return connection.Query<DbMountainRange>(query).Select(MountainRangeMapper.Map).ToList().AsReadOnly();
+        }
+
+        public MountainRange UpdateMountainRange(int id, MountainRange mountainRange)
+        {
+            DbMountainRange dbMountainRange = MountainRangeMapper.Map(mountainRange);
+            dbMountainRange.Id = id;
+
+            const string query = @"
+UPDATE mountain_ranges SET
+    name = @name
+WHERE id = @id";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                connection.Execute(query, dbMountainRange);
+
+            return MountainRangeMapper.Map(dbMountainRange);
+        }
     }
 }

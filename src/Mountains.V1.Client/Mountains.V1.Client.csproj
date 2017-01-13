@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dtos\MountainRangeCollectionDto.cs" />
     <Compile Include="Dtos\MountainCollectionDto.cs" />
+    <Compile Include="Dtos\MountainRangeDto.cs" />
     <Compile Include="Dtos\MountainDto.cs" />
     <Compile Include="MountainsClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

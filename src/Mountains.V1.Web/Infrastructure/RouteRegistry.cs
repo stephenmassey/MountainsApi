@@ -6,9 +6,6 @@ namespace Mountains.V1.Web.Infrastructure
     {
         public static void RegisterRoutes(HttpConfiguration config)
         {
-            // TODO: Add any additional configuration code.
-
-            // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
