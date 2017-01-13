@@ -38,8 +38,7 @@ namespace Mountains.V1.Web.Controllers
         [Route("mountains")]
         public MountainDto Post([FromBody]MountainDto mountainDto)
         {
-            if (mountainDto == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Must supply mountain"));
+            ValidateMountain(mountainDto);
 
             Mountain mountain = _mountainService.AddMountain(MountainMapper.Map(mountainDto));
 
@@ -50,8 +49,7 @@ namespace Mountains.V1.Web.Controllers
         [Route("mountains/{id}")]
         public MountainDto Put(string id, [FromBody]MountainDto mountainDto)
         {
-            if (mountainDto == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Must supply mountain"));
+            ValidateMountain(mountainDto);
 
             Mountain oldMountain = _mountainService.GetMountain(ParseId(id));
 
@@ -75,6 +73,18 @@ namespace Mountains.V1.Web.Controllers
             _mountainService.DeleteMountain(ParseId(id));
         }
 
+        private void ValidateMountain(MountainDto mountain)
+        {
+            if (mountain == null)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Must supply mountain"));
+
+            if (mountain.Name == null || mountain.Name.Length < c_minNameLength || mountain.Name.Length > c_maxNameLength)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid name"));
+        }
+
         private IMountainService _mountainService;
+
+        private const int c_minNameLength = 1;
+        private const int c_maxNameLength = 250;
     }
 }

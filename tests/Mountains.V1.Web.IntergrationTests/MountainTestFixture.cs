@@ -2,6 +2,7 @@
 using Mountains.V1.Client.Dtos;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace Mountains.V1.Web.IntergrationTests
 {
@@ -36,6 +37,39 @@ namespace Mountains.V1.Web.IntergrationTests
 
             Assert.IsNotNull(mountain);
             AssertIsEqual(expectedMountain, mountain);
+        }
+
+        [Test]
+        public void CreateMountainWithNullName()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto expectedMountain = CreateMountainDto();
+            expectedMountain.Name = null;
+
+            Assert.IsNull(client.CreateMountainAsync(expectedMountain).Result);
+        }
+
+        [Test]
+        public void CreateMountainWithEmptyName()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto expectedMountain = CreateMountainDto();
+            expectedMountain.Name = "";
+
+            Assert.IsNull(client.CreateMountainAsync(expectedMountain).Result);
+        }
+
+        [Test]
+        public void CreateMountainWithLongName()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto expectedMountain = CreateMountainDto();
+            expectedMountain.Name = Enumerable.Range(1, 500).Select(x => "a").Aggregate((x, y) => x + y);
+
+            Assert.IsNull(client.CreateMountainAsync(expectedMountain).Result);
         }
 
         [Test]
