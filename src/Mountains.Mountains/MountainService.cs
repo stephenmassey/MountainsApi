@@ -33,7 +33,8 @@ SELECT LAST_INSERT_ID();";
         public void DeleteMountain(int id)
         {
             const string query = @"
-DELETE FROM mountains
+UPDATE mountains
+SET isDeleted = 1
 WHERE id = @id";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -45,7 +46,8 @@ WHERE id = @id";
             string query = @"
 SELECT " + DbMountain.GenerateColumns() + @"
 FROM mountains
-WHERE id = @id";
+WHERE id = @id
+AND isDeleted = 0";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
                 return connection.Query<DbMountain>(query, new { id }).Select(MountainMapper.Map).SingleOrDefault();
@@ -53,10 +55,11 @@ WHERE id = @id";
 
         public ReadOnlyCollection<Mountain> GetMountains(int start, int count, int? mountainRangeId = null)
         {
-            string mountainRangeCondition = mountainRangeId.HasValue ? "WHERE mountainRangeId = @mountainRangeId" : "";
+            string mountainRangeCondition = mountainRangeId.HasValue ? "AND mountainRangeId = @mountainRangeId" : "";
             string query = @"
 SELECT " + DbMountain.GenerateColumns() + @"
 FROM mountains
+WHERE isDeleted = 0
 " + mountainRangeCondition + @"
 LIMIT @start, @count";
 
@@ -105,7 +108,8 @@ SELECT LAST_INSERT_ID();";
         public void DeleteMountainRange(int id)
         {
             const string query = @"
-DELETE FROM mountain_ranges
+UPDATE mountain_ranges
+SET isDeleted = 1
 WHERE id = @id";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -117,7 +121,8 @@ WHERE id = @id";
             string query = @"
 SELECT " + DbMountainRange.GenerateColumns() + @"
 FROM mountain_ranges
-WHERE id = @id";
+WHERE id = @id
+AND isDeleted = 0";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
                 return connection.Query<DbMountainRange>(query, new { id }).Select(MountainRangeMapper.Map).SingleOrDefault();
@@ -128,6 +133,7 @@ WHERE id = @id";
             string query = @"
 SELECT " + DbMountainRange.GenerateColumns() + @"
 FROM mountain_ranges
+WHERE isDeleted = 0
 LIMIT @start, @count";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -169,7 +175,8 @@ SELECT LAST_INSERT_ID();";
         public void DeleteHike(int id)
         {
             const string query = @"
-DELETE FROM hikes
+UPDATE hikes
+SET isDeleted = 1
 WHERE id = @id";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -181,7 +188,8 @@ WHERE id = @id";
             string query = @"
 SELECT " + DbHike.GenerateColumns() + @"
 FROM hikes
-WHERE id = @id";
+WHERE id = @id
+AND isDeleted = 0";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
                 return connection.Query<DbHike>(query, new { id }).Select(HikeMapper.Map).SingleOrDefault();
@@ -192,6 +200,7 @@ WHERE id = @id";
             string query = @"
 SELECT " + DbHike.GenerateColumns() + @"
 FROM hikes
+WHERE isDeleted = 0
 LIMIT @start, @count";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
