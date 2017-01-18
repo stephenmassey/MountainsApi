@@ -51,15 +51,17 @@ WHERE id = @id";
                 return connection.Query<DbMountain>(query, new { id }).Select(MountainMapper.Map).SingleOrDefault();
         }
 
-        public ReadOnlyCollection<Mountain> GetMountains(int start, int count)
+        public ReadOnlyCollection<Mountain> GetMountains(int start, int count, int? mountainRangeId = null)
         {
+            string mountainRangeCondition = mountainRangeId.HasValue ? "WHERE mountainRangeId = @mountainRangeId" : "";
             string query = @"
 SELECT " + DbMountain.GenerateColumns() + @"
 FROM mountains
+" + mountainRangeCondition + @"
 LIMIT @start, @count";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
-                return connection.Query<DbMountain>(query, new { start, count }).Select(MountainMapper.Map).ToList().AsReadOnly();
+                return connection.Query<DbMountain>(query, new { start, count, mountainRangeId }).Select(MountainMapper.Map).ToList().AsReadOnly();
         }
 
         public Mountain UpdateMountain(int id, Mountain mountain)

@@ -82,6 +82,16 @@ namespace Mountains.V1.Client
             return mountainRange;
         }
 
+        public async Task<MountainCollectionDto> GetMountainsInMountainRangeAsync(string mountainRangeId)
+        {
+            MountainCollectionDto mountainCollection = null;
+            HttpResponseMessage response = await _client.GetAsync($"mountainranges/{mountainRangeId}/mountains");
+            if (response.IsSuccessStatusCode)
+                mountainCollection = await response.Content.ReadAsAsync<MountainCollectionDto>();
+
+            return mountainCollection;
+        }
+
         public async Task<MountainRangeDto> CreateMountainRangeAsync(MountainRangeDto mountainRange)
         {
             MountainRangeDto newMountainRange = null;

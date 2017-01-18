@@ -34,6 +34,18 @@ namespace Mountains.V1.Web.Controllers
             return MountainRangeMapper.Map(mountainRange);
         }
 
+        [HttpGet]
+        [Route("mountainranges/{id}/mountains")]
+        public MountainCollectionDto ListMountainsinRange(string id, int start = 0, int? count = null)
+        {
+            MountainRange mountainRange = _mountainService.GetMountainRange(ParseId(id));
+
+            if (mountainRange == null)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find mountain range"));
+
+            return new MountainCollectionDto { Mountains = _mountainService.GetMountains(start, GetCount(count), mountainRange.Id).Select(MountainMapper.Map) };
+        }
+
         [HttpPost]
         [Route("mountainranges")]
         public MountainRangeDto Post([FromBody]MountainRangeDto mountainRangeDto)

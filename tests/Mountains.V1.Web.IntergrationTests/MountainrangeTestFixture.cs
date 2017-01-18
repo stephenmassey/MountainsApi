@@ -21,6 +21,28 @@ namespace Mountains.V1.Web.IntergrationTests
         }
 
         [Test]
+        public void GetMountainsInRange()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            MountainDto expectedMountain = CreateMountainDto();
+            expectedMountain.MountainRangeId = client.CreateMountainRangeAsync(CreateMountainRangeDto()).Result.Id;
+
+            MountainDto actualMountain = client.CreateMountainAsync(expectedMountain).Result;
+            expectedMountain.Id = actualMountain.Id;
+
+            Assert.IsNotNull(actualMountain);
+            AssertIsEqual(expectedMountain, actualMountain);
+
+            MountainCollectionDto mountainCollection = client.GetMountainsInMountainRangeAsync(expectedMountain.MountainRangeId).Result;
+            Assert.IsNotNull(mountainCollection);
+            Assert.IsNotNull(mountainCollection.Mountains);
+            Assert.AreEqual(1, mountainCollection.Mountains.Count());
+
+            AssertIsEqual(expectedMountain, mountainCollection.Mountains.Single());
+        }
+
+        [Test]
         public void CreateMountainRange()
         {
             MountainsClient client = CreateMountainsClient();
