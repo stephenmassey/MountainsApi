@@ -196,6 +196,22 @@ namespace Mountains.V1.Client
             return newUser;
         }
 
+        public async Task<UserDto> SignInAsync(UserDto user)
+        {
+            UserDto newUser = null;
+            HttpResponseMessage response = await _client.PostAsJsonAsync("users/signin", user);
+            if (response.IsSuccessStatusCode)
+                newUser = await response.Content.ReadAsAsync<UserDto>();
+
+            return newUser;
+        }
+
+        public async Task<bool> SignOutAsync()
+        {
+            HttpResponseMessage response = await _client.DeleteAsync("users/signout");
+            return response.IsSuccessStatusCode;
+        }
+
         private string BuildQuery(string requestUri, object parameters)
         {
             if (parameters == null)

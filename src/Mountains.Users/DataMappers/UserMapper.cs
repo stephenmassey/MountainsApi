@@ -11,7 +11,9 @@ namespace Mountains.Users.DataMappers
 
             return new User(
                 source.Id,
-                source.Name);
+                source.Name,
+                source.Email,
+                source.PasswordHash);
         }
 
         public static DbUser Map(User source)
@@ -23,6 +25,8 @@ namespace Mountains.Users.DataMappers
             {
                 Id = source.Id,
                 Name = source.Name,
+                Email = source.Email,
+                PasswordHash = source.PasswordHash,
             };
         }
     }

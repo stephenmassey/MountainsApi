@@ -20,8 +20,8 @@ namespace Mountains.Users
 
             const string query = @"
 INSERT INTO users
-(name)
-VALUES (@name);
+(name, email, passwordHash)
+VALUES (@name, @email, @PasswordHash);
 SELECT LAST_INSERT_ID();";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
@@ -39,6 +39,17 @@ WHERE id = @id";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
                 return connection.Query<DbUser>(query, new { id }).Select(UserMapper.Map).SingleOrDefault();
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            string query = @"
+SELECT " + DbUser.GenerateColumns() + @"
+FROM users
+WHERE email = @email";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                return connection.Query<DbUser>(query, new { email }).Select(UserMapper.Map).SingleOrDefault();
         }
 
         public ReadOnlyCollection<User> GetUsers(int start, int count)

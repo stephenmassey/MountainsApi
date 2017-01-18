@@ -7,6 +7,8 @@ namespace Mountains
     {
         User GetUser(int id);
 
+        User GetUserByEmail(string email);
+
         ReadOnlyCollection<User> GetUsers(int start, int count);
 
         User AddUser(User user);

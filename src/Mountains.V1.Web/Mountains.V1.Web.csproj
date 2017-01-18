@@ -121,6 +121,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mountains.Common\Mountains.Common.csproj">
+      <Project>{257FFAA3-A767-4FF1-A8BB-4C2E79F41E67}</Project>
+      <Name>Mountains.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mountains.Mountains\Mountains.Mountains.csproj">
       <Project>{8755d4a4-f5fc-4ba7-ac01-b72df2d366eb}</Project>
       <Name>Mountains.Mountains</Name>

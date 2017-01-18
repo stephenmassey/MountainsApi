@@ -5,14 +5,16 @@ namespace Mountains.V1.Web.DataMappers
 {
     internal static class UserMapper
     {
-        public static User Map(UserDto source)
+        public static User Map(UserDto source, string email, string passwordHash)
         {
             if (source == null)
                 return null;
 
             return new User(
                 0,
-                source.Name);
+                source.Name,
+                email,
+                passwordHash);
         }
 
         public static UserDto Map(User source)

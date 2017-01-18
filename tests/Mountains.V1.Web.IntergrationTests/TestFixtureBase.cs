@@ -47,6 +47,8 @@ namespace Mountains.V1.Web.IntergrationTests
             return new UserDto
             {
                 Name = Guid.NewGuid().ToString(),
+                Email = Guid.NewGuid().ToString("N") + "@example.com",
+                Password = "bestPassw0rd!"
             };
         }
 

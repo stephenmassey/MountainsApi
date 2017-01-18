@@ -40,6 +40,17 @@ namespace Mountains.V1.Web.IntergrationTests
         }
 
         [Test]
+        public void CreateUserWithTakenEmail()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            UserDto user = CreateUserDto();
+
+            Assert.IsNotNull(client.CreateUserAsync(user).Result);
+            Assert.IsNull(client.CreateUserAsync(user).Result);
+        }
+
+        [Test]
         public void CreateUserWithNullName()
         {
             MountainsClient client = CreateMountainsClient();
@@ -92,6 +103,24 @@ namespace Mountains.V1.Web.IntergrationTests
 
             Assert.IsNotNull(user);
             AssertIsEqual(expectedUser, user);
+        }
+
+        [Test]
+        public void SignIn()
+        {
+            MountainsClient client = CreateMountainsClient();
+            UserDto user = CreateUserDto();
+            UserDto expectedUser = client.CreateUserAsync(user).Result;
+            UserDto actualUser = client.SignInAsync(user).Result;
+
+            AssertIsEqual(expectedUser, actualUser);
+        }
+
+        [Test]
+        public void SignOut()
+        {
+            MountainsClient client = CreateMountainsClient();
+            Assert.IsTrue(client.SignOutAsync().Result);
         }
     }
 }
