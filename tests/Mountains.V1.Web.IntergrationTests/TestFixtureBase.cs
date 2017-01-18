@@ -33,6 +33,15 @@ namespace Mountains.V1.Web.IntergrationTests
             };
         }
 
+        protected HikeDto CreateHikeDto(string mountainId, string userId)
+        {
+            return new HikeDto
+            {
+                MountainId = mountainId,
+                UserId = userId,
+            };
+        }
+
         protected UserDto CreateUserDto()
         {
             return new UserDto
@@ -63,6 +72,16 @@ namespace Mountains.V1.Web.IntergrationTests
 
             Assert.AreEqual(expectedMountainRange.Id, actualMountainRange.Id);
             Assert.AreEqual(expectedMountainRange.Name, actualMountainRange.Name);
+        }
+
+        protected void AssertIsEqual(HikeDto expectedHike, HikeDto actualHike)
+        {
+            Assert.IsNotNull(expectedHike);
+            Assert.IsNotNull(actualHike);
+
+            Assert.AreEqual(expectedHike.Id, actualHike.Id);
+            Assert.AreEqual(expectedHike.MountainId, actualHike.MountainId);
+            Assert.AreEqual(expectedHike.UserId, actualHike.UserId);
         }
 
         protected void AssertIsEqual(UserDto expectedUser, UserDto actualUser)

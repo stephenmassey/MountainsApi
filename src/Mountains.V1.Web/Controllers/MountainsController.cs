@@ -82,7 +82,7 @@ namespace Mountains.V1.Web.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid name"));
 
             if (mountain.MountainRangeId != null && _mountainService.GetMountainRange(ParseId(mountain.MountainRangeId)) == null)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find moountain range"));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find mountain range"));
         }
 
         private IMountainService _mountainService;

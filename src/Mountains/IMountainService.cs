@@ -24,5 +24,13 @@ namespace Mountains
         MountainRange UpdateMountainRange(int id, MountainRange mountain);
 
         void DeleteMountainRange(int id);
+
+        Hike GetHike(int id);
+
+        ReadOnlyCollection<Hike> GetHikes(int start, int count);
+
+        Hike AddHike(Hike hike);
+
+        void DeleteHike(int id);
     }
 }

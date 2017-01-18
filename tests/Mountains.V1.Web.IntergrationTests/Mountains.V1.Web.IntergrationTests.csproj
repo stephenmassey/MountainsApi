@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MountainRangeTestFixture.cs" />
+    <Compile Include="HikeTestFixture.cs" />
     <Compile Include="UserTestFixture.cs" />
     <Compile Include="MountainTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

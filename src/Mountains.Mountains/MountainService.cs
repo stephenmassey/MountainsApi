@@ -149,5 +149,53 @@ WHERE id = @id";
 
             return MountainRangeMapper.Map(dbMountainRange);
         }
+
+        public Hike AddHike(Hike hike)
+        {
+            DbHike dbHike = HikeMapper.Map(hike);
+
+            const string query = @"
+INSERT INTO hikes
+(mountainId, userId)
+VALUES (@mountainId, @userId);
+SELECT LAST_INSERT_ID();";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                dbHike.Id = connection.Query<int>(query, dbHike).Single();
+
+            return HikeMapper.Map(dbHike);
+        }
+
+        public void DeleteHike(int id)
+        {
+            const string query = @"
+DELETE FROM hikes
+WHERE id = @id";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                connection.Execute(query, new { id });
+        }
+
+        public Hike GetHike(int id)
+        {
+            string query = @"
+SELECT " + DbHike.GenerateColumns() + @"
+FROM hikes
+WHERE id = @id";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                return connection.Query<DbHike>(query, new { id }).Select(HikeMapper.Map).SingleOrDefault();
+        }
+
+        public ReadOnlyCollection<Hike> GetHikes(int start, int count)
+        {
+            string query = @"
+SELECT " + DbHike.GenerateColumns() + @"
+FROM hikes
+LIMIT @start, @count";
+
+            using (IDbConnection connection = DatabaseConnection.GetConnection())
+                return connection.Query<DbHike>(query, new { start, count }).Select(HikeMapper.Map).ToList().AsReadOnly();
+        }
     }
 }

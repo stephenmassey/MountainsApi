@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dtos\HikeDto.cs" />
+    <Compile Include="Dtos\HikeCollectionDto.cs" />
     <Compile Include="Dtos\UserCollectionDto.cs" />
     <Compile Include="Dtos\UesrDto.cs" />
     <Compile Include="Dtos\MountainRangeCollectionDto.cs" />

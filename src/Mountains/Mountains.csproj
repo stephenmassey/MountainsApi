@@ -43,6 +43,7 @@
     <Compile Include="IUserService.cs" />
     <Compile Include="IMountainService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceModels\Hike.cs" />
     <Compile Include="ServiceModels\User.cs" />
     <Compile Include="ServiceModels\MountainRange.cs" />
     <Compile Include="ServiceModels\Mountain.cs" />

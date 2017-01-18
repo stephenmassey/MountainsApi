@@ -118,6 +118,42 @@ namespace Mountains.V1.Client
             return response.IsSuccessStatusCode;
         }
 
+        public async Task<HikeCollectionDto> GetHikesAsync()
+        {
+            HikeCollectionDto hikeCollection = null;
+            HttpResponseMessage response = await _client.GetAsync("hikes");
+            if (response.IsSuccessStatusCode)
+                hikeCollection = await response.Content.ReadAsAsync<HikeCollectionDto>();
+
+            return hikeCollection;
+        }
+
+        public async Task<HikeDto> GetHikeAsync(string hikeId)
+        {
+            HikeDto hike = null;
+            HttpResponseMessage response = await _client.GetAsync($"hikes/{hikeId}");
+            if (response.IsSuccessStatusCode)
+                hike = await response.Content.ReadAsAsync<HikeDto>();
+
+            return hike;
+        }
+
+        public async Task<HikeDto> CreateHikeAsync(HikeDto hike)
+        {
+            HikeDto newHike = null;
+            HttpResponseMessage response = await _client.PostAsJsonAsync("hikes", hike);
+            if (response.IsSuccessStatusCode)
+                newHike = await response.Content.ReadAsAsync<HikeDto>();
+
+            return newHike;
+        }
+
+        public async Task<bool> DeleteHikeAsync(string hikeId)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"hikes/{hikeId}");
+            return response.IsSuccessStatusCode;
+        }
+
         public async Task<UserCollectionDto> GetUsersAsync()
         {
             UserCollectionDto userCollection = null;

@@ -89,8 +89,10 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\MountainRangesController.cs" />
+    <Compile Include="Controllers\HikesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\MountainsController.cs" />
+    <Compile Include="DataMappers\HikeMapper.cs" />
     <Compile Include="DataMappers\UserMapper.cs" />
     <Compile Include="DataMappers\MountainRangeMapper.cs" />
     <Compile Include="DataMappers\MountainMapper.cs" />
