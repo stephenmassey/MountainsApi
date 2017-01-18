@@ -118,6 +118,46 @@ namespace Mountains.V1.Client
             return response.IsSuccessStatusCode;
         }
 
+        public async Task<UserCollectionDto> GetUsersAsync()
+        {
+            UserCollectionDto userCollection = null;
+            HttpResponseMessage response = await _client.GetAsync("users");
+            if (response.IsSuccessStatusCode)
+                userCollection = await response.Content.ReadAsAsync<UserCollectionDto>();
+
+            return userCollection;
+        }
+
+        public async Task<UserDto> GetUserAsync(string userId)
+        {
+            UserDto user = null;
+            HttpResponseMessage response = await _client.GetAsync($"users/{userId}");
+            if (response.IsSuccessStatusCode)
+                user = await response.Content.ReadAsAsync<UserDto>();
+
+            return user;
+        }
+
+        public async Task<UserDto> CreateUserAsync(UserDto user)
+        {
+            UserDto newUser = null;
+            HttpResponseMessage response = await _client.PostAsJsonAsync("users", user);
+            if (response.IsSuccessStatusCode)
+                newUser = await response.Content.ReadAsAsync<UserDto>();
+
+            return newUser;
+        }
+
+        public async Task<UserDto> UpdateUserAsync(string userId, UserDto user)
+        {
+            UserDto newUser = null;
+            HttpResponseMessage response = await _client.PutAsJsonAsync($"users/{userId}", user);
+            if (response.IsSuccessStatusCode)
+                newUser = await response.Content.ReadAsAsync<UserDto>();
+
+            return newUser;
+        }
+
         private HttpClient _client;
     }
 }

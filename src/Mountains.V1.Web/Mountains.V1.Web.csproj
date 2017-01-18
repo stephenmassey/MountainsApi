@@ -89,7 +89,9 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\MountainRangesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\MountainsController.cs" />
+    <Compile Include="DataMappers\UserMapper.cs" />
     <Compile Include="DataMappers\MountainRangeMapper.cs" />
     <Compile Include="DataMappers\MountainMapper.cs" />
     <Compile Include="Global.asax.cs">
@@ -120,6 +122,10 @@
     <ProjectReference Include="..\Mountains.Mountains\Mountains.Mountains.csproj">
       <Project>{8755d4a4-f5fc-4ba7-ac01-b72df2d366eb}</Project>
       <Name>Mountains.Mountains</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mountains.Users\Mountains.Users.csproj">
+      <Project>{b492ee12-dee0-4109-88aa-a1a912bf365b}</Project>
+      <Name>Mountains.Users</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mountains.V1.Client\Mountains.V1.Client.csproj">
       <Project>{ae2f5a45-6605-4b99-b3b5-f9fa025960d4}</Project>
