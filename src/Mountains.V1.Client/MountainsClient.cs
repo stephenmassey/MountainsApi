@@ -1,6 +1,7 @@
 ﻿using Mountains.V1.Client.Dtos;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -203,7 +204,7 @@ namespace Mountains.V1.Client
             var queryParameters = parameters.GetType().GetProperties()
                 .Select(x => Tuple.Create(x.Name, x.GetValue(parameters)))
                 .Where(x => x.Item2 != null)
-                .Select(x => x.Item1 + "=" + x.Item2);
+                .Select(x => x.Item1 + "=" + WebUtility.UrlEncode(x.Item2.ToString()));
 
             return queryParameters.Any() ? requestUri + "?" + queryParameters.Aggregate((i, j) => i + "&" + j) : requestUri;
         }
