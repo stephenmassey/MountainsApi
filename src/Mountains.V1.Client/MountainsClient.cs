@@ -1,5 +1,6 @@
 ﻿using Mountains.V1.Client.Dtos;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -16,10 +17,10 @@ namespace Mountains.V1.Client
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<MountainCollectionDto> GetMountainsAsync()
+        public async Task<MountainCollectionDto> GetMountainsAsync(int? start = null, int? count = null)
         {
             MountainCollectionDto mountainCollection = null;
-            HttpResponseMessage response = await _client.GetAsync("mountains");
+            HttpResponseMessage response = await _client.GetAsync(BuildQuery("mountains", new { start, count }));
             if (response.IsSuccessStatusCode)
                 mountainCollection = await response.Content.ReadAsAsync<MountainCollectionDto>();
 
@@ -62,10 +63,10 @@ namespace Mountains.V1.Client
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<MountainRangeCollectionDto> GetMountainRangesAsync()
+        public async Task<MountainRangeCollectionDto> GetMountainRangesAsync(int? start = null, int? count = null)
         {
             MountainRangeCollectionDto mountainRangeCollection = null;
-            HttpResponseMessage response = await _client.GetAsync("mountainranges");
+            HttpResponseMessage response = await _client.GetAsync(BuildQuery("mountainranges", new { start, count }));
             if (response.IsSuccessStatusCode)
                 mountainRangeCollection = await response.Content.ReadAsAsync<MountainRangeCollectionDto>();
 
@@ -118,10 +119,10 @@ namespace Mountains.V1.Client
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<HikeCollectionDto> GetHikesAsync()
+        public async Task<HikeCollectionDto> GetHikesAsync(int? start = null, int? count = null, string mountainId = null, string userId = null)
         {
             HikeCollectionDto hikeCollection = null;
-            HttpResponseMessage response = await _client.GetAsync("hikes");
+            HttpResponseMessage response = await _client.GetAsync(BuildQuery("hikes", new { start, count, mountainId, userId }));
             if (response.IsSuccessStatusCode)
                 hikeCollection = await response.Content.ReadAsAsync<HikeCollectionDto>();
 
@@ -154,10 +155,10 @@ namespace Mountains.V1.Client
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<UserCollectionDto> GetUsersAsync()
+        public async Task<UserCollectionDto> GetUsersAsync(int? start = null, int? count = null)
         {
             UserCollectionDto userCollection = null;
-            HttpResponseMessage response = await _client.GetAsync("users");
+            HttpResponseMessage response = await _client.GetAsync(BuildQuery("users", new { start, count }));
             if (response.IsSuccessStatusCode)
                 userCollection = await response.Content.ReadAsAsync<UserCollectionDto>();
 
@@ -192,6 +193,19 @@ namespace Mountains.V1.Client
                 newUser = await response.Content.ReadAsAsync<UserDto>();
 
             return newUser;
+        }
+
+        private string BuildQuery(string requestUri, object parameters)
+        {
+            if (parameters == null)
+                return requestUri;
+
+            var queryParameters = parameters.GetType().GetProperties()
+                .Select(x => Tuple.Create(x.Name, x.GetValue(parameters)))
+                .Where(x => x.Item2 != null)
+                .Select(x => x.Item1 + "=" + x.Item2);
+
+            return queryParameters.Any() ? requestUri + "?" + queryParameters.Aggregate((i, j) => i + "&" + j) : requestUri;
         }
 
         private HttpClient _client;

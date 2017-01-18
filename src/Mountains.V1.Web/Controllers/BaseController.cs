@@ -16,6 +16,14 @@ namespace Mountains.V1.Web.Controllers
             return id;
         }
 
+        protected int? ParseIdOrDefault(string source)
+        {
+            if (source == null)
+                return null;
+
+            return ParseId(source);
+        }
+
         protected int GetCount(int? count)
         {
             if (!count.HasValue)

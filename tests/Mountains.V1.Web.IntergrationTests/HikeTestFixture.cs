@@ -1,7 +1,6 @@
 ﻿using Mountains.V1.Client;
 using Mountains.V1.Client.Dtos;
 using NUnit.Framework;
-using System;
 using System.Linq;
 
 namespace Mountains.V1.Web.IntergrationTests
@@ -18,6 +17,38 @@ namespace Mountains.V1.Web.IntergrationTests
 
             Assert.IsNotNull(hikes);
             Assert.IsNotNull(hikes.Hikes);
+        }
+
+        [Test]
+        public void GetHikesByMountain()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, client.CreateUserAsync(CreateUserDto()).Result.Id);
+            expectedHike.Id = client.CreateHikeAsync(expectedHike).Result.Id;
+
+            HikeCollectionDto hikes = client.GetHikesAsync(mountainId: expectedHike.MountainId).Result;
+
+            Assert.IsNotNull(hikes);
+            Assert.IsNotNull(hikes.Hikes);
+            Assert.AreEqual(1, hikes.Hikes.Count());
+            AssertIsEqual(expectedHike, hikes.Hikes.Single());
+        }
+
+        [Test]
+        public void GetHikesByUser()
+        {
+            MountainsClient client = CreateMountainsClient();
+
+            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, client.CreateUserAsync(CreateUserDto()).Result.Id);
+            expectedHike.Id = client.CreateHikeAsync(expectedHike).Result.Id;
+
+            HikeCollectionDto hikes = client.GetHikesAsync(userId: expectedHike.UserId).Result;
+
+            Assert.IsNotNull(hikes);
+            Assert.IsNotNull(hikes.Hikes);
+            Assert.AreEqual(1, hikes.Hikes.Count());
+            AssertIsEqual(expectedHike, hikes.Hikes.Single());
         }
 
         [Test]

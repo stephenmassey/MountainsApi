@@ -18,9 +18,9 @@ namespace Mountains.V1.Web.Controllers
 
         [HttpGet]
         [Route("hikes")]
-        public HikeCollectionDto List(int start = 0, int? count = null)
+        public HikeCollectionDto List(int start = 0, int? count = null, string mountainId = null, string userId = null)
         {
-            return new HikeCollectionDto { Hikes = _mountainService.GetHikes(start, GetCount(count)).Select(HikeMapper.Map) };
+            return new HikeCollectionDto { Hikes = _mountainService.GetHikes(start, GetCount(count), ParseIdOrDefault(mountainId), ParseIdOrDefault(userId)).Select(HikeMapper.Map) };
         }
 
         [HttpGet]

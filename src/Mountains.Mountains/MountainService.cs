@@ -195,16 +195,20 @@ AND isDeleted = 0";
                 return connection.Query<DbHike>(query, new { id }).Select(HikeMapper.Map).SingleOrDefault();
         }
 
-        public ReadOnlyCollection<Hike> GetHikes(int start, int count)
+        public ReadOnlyCollection<Hike> GetHikes(int start, int count, int? mountainId, int? userId)
         {
+            string mountainCondition = mountainId.HasValue ? "AND mountainId = @mountainId" : "";
+            string userCondition = userId.HasValue ? "AND userId = @userId" : "";
             string query = @"
 SELECT " + DbHike.GenerateColumns() + @"
 FROM hikes
 WHERE isDeleted = 0
+" + mountainCondition + @"
+" + userCondition + @"
 LIMIT @start, @count";
 
             using (IDbConnection connection = DatabaseConnection.GetConnection())
-                return connection.Query<DbHike>(query, new { start, count }).Select(HikeMapper.Map).ToList().AsReadOnly();
+                return connection.Query<DbHike>(query, new { start, count, mountainId, userId }).Select(HikeMapper.Map).ToList().AsReadOnly();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Mountains
 
         Hike GetHike(int id);
 
-        ReadOnlyCollection<Hike> GetHikes(int start, int count);
+        ReadOnlyCollection<Hike> GetHikes(int start, int count, int? mountainId, int? userId);
 
         Hike AddHike(Hike hike);
 
