@@ -23,8 +23,11 @@ namespace Mountains.V1.Web.IntergrationTests
         public void GetHikesByMountain()
         {
             MountainsClient client = CreateMountainsClient();
+            UserDto user = CreateUserDto();
+            user.Id = client.CreateUserAsync(user).Result.Id;
+            Assert.IsNotNull(client.SignInAsync(user).Result);
 
-            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, client.CreateUserAsync(CreateUserDto()).Result.Id);
+            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, user.Id);
             expectedHike.Id = client.CreateHikeAsync(expectedHike).Result.Id;
 
             HikeCollectionDto hikes = client.GetHikesAsync(mountainId: expectedHike.MountainId).Result;
@@ -39,8 +42,11 @@ namespace Mountains.V1.Web.IntergrationTests
         public void GetHikesByUser()
         {
             MountainsClient client = CreateMountainsClient();
+            UserDto user = CreateUserDto();
+            user.Id = client.CreateUserAsync(user).Result.Id;
+            Assert.IsNotNull(client.SignInAsync(user).Result);
 
-            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, client.CreateUserAsync(CreateUserDto()).Result.Id);
+            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, user.Id);
             expectedHike.Id = client.CreateHikeAsync(expectedHike).Result.Id;
 
             HikeCollectionDto hikes = client.GetHikesAsync(userId: expectedHike.UserId).Result;
@@ -55,8 +61,11 @@ namespace Mountains.V1.Web.IntergrationTests
         public void CreateHike()
         {
             MountainsClient client = CreateMountainsClient();
+            UserDto user = CreateUserDto();
+            user.Id = client.CreateUserAsync(user).Result.Id;
+            Assert.IsNotNull(client.SignInAsync(user).Result);
 
-            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, client.CreateUserAsync(CreateUserDto()).Result.Id);
+            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, user.Id);
 
             HikeDto actualHike = client.CreateHikeAsync(expectedHike).Result;
             expectedHike.Id = actualHike.Id;
@@ -92,8 +101,11 @@ namespace Mountains.V1.Web.IntergrationTests
         public void DeleteHike()
         {
             MountainsClient client = CreateMountainsClient();
+            UserDto user = CreateUserDto();
+            user.Id = client.CreateUserAsync(user).Result.Id;
+            Assert.IsNotNull(client.SignInAsync(user).Result);
 
-            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, client.CreateUserAsync(CreateUserDto()).Result.Id);
+            HikeDto expectedHike = CreateHikeDto(client.CreateMountainAsync(CreateMountainDto()).Result.Id, user.Id);
             HikeDto actualHike = client.CreateHikeAsync(expectedHike).Result;
 
             Assert.IsTrue(client.DeleteHikeAsync(actualHike.Id).Result);

@@ -73,14 +73,14 @@ namespace Mountains.V1.Web.Controllers
         [Route("users/{id}")]
         public UserDto Update(string id, [FromBody]UserDto userDto)
         {
-            ValidateUserForUpdate(userDto);
+            int userId = ParseId(id);
 
-            User oldUser = _userService.GetUser(ParseId(id));
-
-            if (oldUser == null)
+            if (userId != AuthenticationService.UserId || _userService.GetUser(userId) == null)
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find user"));
 
-            User newUser = _userService.UpdateUser(ParseId(id), UserMapper.Map(userDto, null, null));
+            ValidateUserForUpdate(userDto);
+
+            User newUser = _userService.UpdateUser(userId, UserMapper.Map(userDto, null, null));
 
             return UserMapper.Map(newUser);
         }

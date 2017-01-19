@@ -54,7 +54,7 @@ namespace Mountains.V1.Web.Controllers
         {
             Hike hike = _mountainService.GetHike(ParseId(id));
 
-            if (hike == null)
+            if (hike == null || hike.UserId != AuthenticationService.UserId)
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find hike"));
 
             _mountainService.DeleteHike(ParseId(id));
@@ -68,7 +68,7 @@ namespace Mountains.V1.Web.Controllers
             if (hike.MountainId == null || _mountainService.GetMountain(ParseId(hike.MountainId)) == null)
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find mountain"));
 
-            if (hike.UserId == null || _userService.GetUser(ParseId(hike.UserId)) == null)
+            if (hike.UserId == null || ParseId(hike.UserId) != AuthenticationService.UserId || _userService.GetUser(ParseId(hike.UserId)) == null)
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find user"));
         }
 

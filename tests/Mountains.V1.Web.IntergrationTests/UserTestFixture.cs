@@ -94,6 +94,8 @@ namespace Mountains.V1.Web.IntergrationTests
             expectedUser.Id = actualUser.Id;
             expectedUser.Name = "Updated " + Guid.NewGuid().ToString();
 
+            Assert.IsNotNull(client.SignInAsync(expectedUser).Result);
+
             actualUser = client.UpdateUserAsync(expectedUser.Id, expectedUser).Result;
 
             Assert.IsNotNull(actualUser);
