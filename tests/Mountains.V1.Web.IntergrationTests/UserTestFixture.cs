@@ -106,7 +106,14 @@ namespace Mountains.V1.Web.IntergrationTests
         }
 
         [Test]
-        public void SignIn()
+        public void GetCurrentUserNotSignedIn()
+        {
+            MountainsClient client = CreateMountainsClient();
+            Assert.IsNull(client.GetCurrentUserAsync().Result);
+        }
+
+        [Test]
+        public void SignInAndOut()
         {
             MountainsClient client = CreateMountainsClient();
             UserDto user = CreateUserDto();
@@ -114,13 +121,12 @@ namespace Mountains.V1.Web.IntergrationTests
             UserDto actualUser = client.SignInAsync(user).Result;
 
             AssertIsEqual(expectedUser, actualUser);
-        }
 
-        [Test]
-        public void SignOut()
-        {
-            MountainsClient client = CreateMountainsClient();
+            UserDto currentUser = client.GetCurrentUserAsync().Result;
+            AssertIsEqual(expectedUser, currentUser);
+
             Assert.IsTrue(client.SignOutAsync().Result);
+            Assert.IsNull(client.GetCurrentUserAsync().Result);
         }
     }
 }

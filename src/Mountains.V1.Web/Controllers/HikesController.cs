@@ -1,6 +1,7 @@
 ﻿using Mountains.ServiceModels;
 using Mountains.V1.Client.Dtos;
 using Mountains.V1.Web.DataMappers;
+using Mountains.V1.Web.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,7 +11,8 @@ namespace Mountains.V1.Web.Controllers
 {
     public sealed class HikesController : BaseController
     {
-        public HikesController(IMountainService mountainService, IUserService userService)
+        public HikesController(AuthenticationService authenticationService, IMountainService mountainService, IUserService userService)
+            : base(authenticationService)
         {
             _mountainService = mountainService;
             _userService = userService;
@@ -70,7 +72,7 @@ namespace Mountains.V1.Web.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find user"));
         }
 
-        private IMountainService _mountainService;
-        private IUserService _userService;
+        private readonly IMountainService _mountainService;
+        private readonly IUserService _userService;
     }
 }

@@ -176,6 +176,16 @@ namespace Mountains.V1.Client
             return user;
         }
 
+        public async Task<UserDto> GetCurrentUserAsync()
+        {
+            UserDto user = null;
+            HttpResponseMessage response = await _client.GetAsync("users/currentUser");
+            if (response.IsSuccessStatusCode)
+                user = await response.Content.ReadAsAsync<UserDto>();
+
+            return user;
+        }
+
         public async Task<UserDto> CreateUserAsync(UserDto user)
         {
             UserDto newUser = null;

@@ -2,9 +2,12 @@
 using Mountains.ServiceModels;
 using Mountains.V1.Client.Dtos;
 using Mountains.V1.Web.DataMappers;
+using Mountains.V1.Web.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 
@@ -12,7 +15,8 @@ namespace Mountains.V1.Web.Controllers
 {
     public sealed class UsersController : BaseController
     {
-        public UsersController(IUserService userService)
+        public UsersController(AuthenticationService authenticationService, IUserService userService)
+            : base(authenticationService)
         {
             _userService = userService;
         }
@@ -29,6 +33,21 @@ namespace Mountains.V1.Web.Controllers
         public UserDto Get(string id)
         {
             User user = _userService.GetUser(ParseId(id));
+
+            if (user == null)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find user"));
+
+            return UserMapper.Map(user);
+        }
+
+        [HttpGet]
+        [Route("users/currentUser")]
+        public UserDto GetCurrentUser()
+        {
+            if (!AuthenticationService.IsAuthenticated)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ""));
+
+            User user = _userService.GetUser(AuthenticationService.UserId);
 
             if (user == null)
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Cannot find user"));
@@ -68,7 +87,7 @@ namespace Mountains.V1.Web.Controllers
 
         [HttpPost]
         [Route("users/signin")]
-        public UserDto SignIn([FromBody]UserDto userDto)
+        public HttpResponseMessage SignIn([FromBody]UserDto userDto)
         {
             if (userDto.Email == null || userDto.Password == null)
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Must supply user name and password"));
@@ -78,16 +97,21 @@ namespace Mountains.V1.Web.Controllers
             if (user == null || !PasswordHasher.ValidatePassword(userDto.Password, user.PasswordHash))
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invlaide username or password"));
 
-            // TODO: set cookie
+            HttpResponseMessage response = new HttpResponseMessage();
 
-            return UserMapper.Map(user);
+            response.Content = new ObjectContent<UserDto>(UserMapper.Map(user), new JsonMediaTypeFormatter());
+            response.Headers.AddCookies(new CookieHeaderValue[] { AuthenticationService.CreateAuthenticationCookie(user) });
+            return response;
         }
 
         [HttpDelete]
         [Route("users/signout")]
-        public void SignOut()
+        public HttpResponseMessage SignOut()
         {
-            // TODO: remove cookie
+            HttpResponseMessage response = new HttpResponseMessage();
+
+            response.Headers.AddCookies(new CookieHeaderValue[] { AuthenticationService.CreateAnonymousAuthenticationCookie() });
+            return response;
         }
 
         private void ValidateUserForCreate(UserDto user)
@@ -110,7 +134,7 @@ namespace Mountains.V1.Web.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid name"));
         }
 
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         private const int c_minPasswordLength = 8;
         private const int c_minNameLength = 1;

@@ -1,6 +1,7 @@
 ﻿using Mountains.ServiceModels;
 using Mountains.V1.Client.Dtos;
 using Mountains.V1.Web.DataMappers;
+using Mountains.V1.Web.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,7 +11,8 @@ namespace Mountains.V1.Web.Controllers
 {
     public sealed class MountainRangesController : BaseController
     {
-        public MountainRangesController(IMountainService mountainService)
+        public MountainRangesController(AuthenticationService authenticationService, IMountainService mountainService)
+            : base(authenticationService)
         {
             _mountainService = mountainService;
         }
@@ -94,7 +96,7 @@ namespace Mountains.V1.Web.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid name"));
         }
 
-        private IMountainService _mountainService;
+        private readonly IMountainService _mountainService;
 
         private const int c_minNameLength = 1;
         private const int c_maxNameLength = 250;
